@@ -2,10 +2,8 @@ module NavigatorRails
   class Navigator
     class << self
       def render path
-        context   = binding.of_caller(1)
-
-        Constraint.context=context
-        Decorator.context=context
+        Constraint.context = binding.of_caller(1)
+        Decorator.context  = binding.of_caller(1)
 
         path      = Item.normalize_path(path)
         resource  = Store.get(path)

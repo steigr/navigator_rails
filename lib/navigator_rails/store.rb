@@ -83,7 +83,9 @@ module NavigatorRails
       end
     end
     def collect
-      NavigatorRails.config[:search_at].each do |dir|
+      config = NavigatorRails.config
+      return unless config and config[:search_at]
+      config[:search_at].each do |dir|
         Dir["#{dir}/**/*.rb"].each do |file|
           get_items_of get_controller(dir, file)
         end
