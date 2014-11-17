@@ -90,7 +90,7 @@ module NavigatorRails
       end
     end
     private
-    def fill_gaps
+    def collect_paths
       paths = []
       @items.each do |item|
         path = item.path
@@ -101,30 +101,35 @@ module NavigatorRails
           path = path.split('/')[0..-2].join('/')
         end
       end
-      paths.each do |path|
+      paths
+    end
+    def get_i18n_content content
+      begin
+        content.singularize.constantize.model_name.human(count: 2)
+        return "'#{content}'.singularize.constantize.model_name.human(count: 2)"
+      rescue I18n::InvalidPluralizationData
+        content.singularize.constantize.model_name.human(count: 1)
+        return "'#{content}'.singularize.constantize.model_name.human(count: 1)"
+      rescue NameError
+        return content
+      end
+    end
+    def fill_gaps
+      collect_paths.each do |path|
         next unless get(path).nil?
-        params = {}
-        level               = Item.level_of path
-        params[:path]       = path
-        params[:type]       = Decorator.at level: level
-        params[:constraint] = Constraint.default
-        params[:content]    = "#{File.basename(path)}"
+        item = Item.new
+        item.path       = path
+        item.type       = Decorator.at level: item.level
+        item.constraint = Constraint.default
+        item.content    = "#{File.basename(path)}"
+        item.content    = get_i18n_content item.content
         begin
-          params[:active_controller] = "#{params[:content]}Controller".constantize
-          params[:active_on]         = :all
+          item.active_controller = "#{item.content}Controller".constantize
+          item.active_on         = :all
         rescue NameError
           nil
         end
-        begin
-          params[:content].singularize.constantize.model_name.human(count: 2)
-          params[:content] = "'#{params[:content]}'.singularize.constantize.model_name.human(count: 2)"
-        rescue I18n::InvalidPluralizationData
-          params[:content].singularize.constantize.model_name.human(count: 1)
-          params[:content] = "'#{params[:content]}'.singularize.constantize.model_name.human(count: 1)"
-        rescue NameError
-          nil
-        end
-        Item.new(params).save
+        item.save
       end
     end
   end
