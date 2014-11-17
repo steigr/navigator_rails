@@ -11,7 +11,7 @@ module NavigatorRails
         path
       end
     end
-    attr_accessor :path, :order, :type
+    attr_accessor :path, :order, :type, :active_on, :active_controller
     attr_writer :content, :constraint
     def save
       self.type ||= Decorator.at level: self.level
@@ -31,6 +31,13 @@ module NavigatorRails
     end
     def constraint
       Constraint.process(@constraint.to_s) rescue Store.delete self
+    end
+    def active
+      return unless @active_on
+      return unless Constraint.process('controller').class == @active_controller
+      return "active" if @active_on == :all
+      return unless Constraint.process('params')['action'].to_sym == @active_on
+      "active"
     end
   end
 end

@@ -7,7 +7,7 @@ module NavigatorRails
     module ClassMethods
       def menu_item params={}
         self.navigator_rails_items ||= []
-        self.navigator_rails_items  << Item.new(params)
+        self.navigator_rails_items  << Item.new(params.merge(active_controller: self))
       end
     end
   end

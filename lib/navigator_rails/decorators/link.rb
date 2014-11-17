@@ -4,7 +4,7 @@ module NavigatorRails
       include NavigatorRails::Decorators::Generic
       def template
         <<-LINK_DECORATION.strip_heredoc
-          <li><%= resource.content %></li>
+          <li class="<%= resource.active %>"><%= resource.content %></li>
         LINK_DECORATION
       end
     end

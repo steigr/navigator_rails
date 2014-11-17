@@ -13,7 +13,6 @@ module NavigatorRails
       def process_config_builders; Store.instance.process_config_builders; end
     end
     def initialize
-      puts "Initializing store"
       @items     ||= []
     end
     def items
@@ -35,10 +34,18 @@ module NavigatorRails
       @items.delete(item)
     end
     def children_of resource
-      @items.collect do |item|
+      unordered_items = @items.collect do |item|
         next unless item.path  =~ /^#{resource.path}\//
         next unless item.level == resource.level+1
-        item
+        [item, item.order]
+      end.compact
+      orderable_items = unordered_items.collect do |item,order|
+        [order,item] if order
+      end.compact
+      items = []
+      items += orderable_items.sort.to_h.values unless orderable_items.empty?
+      items += unordered_items.collect do |item,order|
+        item unless order
       end.compact
     end
     def process_config_builders
@@ -96,21 +103,28 @@ module NavigatorRails
       end
       paths.each do |path|
         next unless get(path).nil?
-        level      = Item.level_of path
-        type       = Decorator.at level: level
-        constraint = Constraint.default
-        content    = "#{File.basename(path)}"
+        params = {}
+        level               = Item.level_of path
+        params[:path]       = path
+        params[:type]       = Decorator.at level: level
+        params[:constraint] = Constraint.default
+        params[:content]    = "#{File.basename(path)}"
         begin
-          content.singularize.constantize.model_name.human(count: 2)
-          i18n_content = "'#{content}'.singularize.constantize.model_name.human(count: 2)"
-        rescue I18n::InvalidPluralizationData
-          content.singularize.constantize.model_name.human(count: 1)
-          i18n_content = "'#{content}'.singularize.constantize.model_name.human(count: 1)"
+          params[:active_controller] = "#{params[:content]}Controller".constantize
+          params[:active_on]         = :all
         rescue NameError
           nil
         end
-        content  =i18n_content ? i18n_content : "'#{content}'"
-        Item.new(path:path, type: type, content: content, constraint: constraint).save
+        begin
+          params[:content].singularize.constantize.model_name.human(count: 2)
+          params[:content] = "'#{params[:content]}'.singularize.constantize.model_name.human(count: 2)"
+        rescue I18n::InvalidPluralizationData
+          params[:content].singularize.constantize.model_name.human(count: 1)
+          params[:content] = "'#{params[:content]}'.singularize.constantize.model_name.human(count: 1)"
+        rescue NameError
+          nil
+        end
+        Item.new(params).save
       end
     end
   end
