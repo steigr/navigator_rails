@@ -1,0 +1,1 @@
+require 'navigator_rails/helpers/application_helper.rb'

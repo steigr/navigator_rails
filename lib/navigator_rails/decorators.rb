@@ -1,0 +1,6 @@
+require 'navigator_rails/decorators/generic'
+require 'navigator_rails/decorators/navigator'
+require 'navigator_rails/decorators/navbar'
+require 'navigator_rails/decorators/submenu'
+require 'navigator_rails/decorators/link'
+require 'navigator_rails/decorators/brand'
