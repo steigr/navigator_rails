@@ -121,8 +121,7 @@ module NavigatorRails
         item.path       = path
         item.type       = Decorator.at level: item.level
         item.constraint = Constraint.default
-        item.content    = "#{File.basename(path)}"
-        item.content    = get_i18n_content item.content
+        item.content    = get_i18n_content("#{File.basename(path)}")
         begin
           item.active_controller = "#{item.content}Controller".constantize
           item.active_on         = :all
