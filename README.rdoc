@@ -1,8 +1,3 @@
 = NavigatorRails
 
 This project rocks and uses MIT-LICENSE.
-
-= Code Climate
-
-Climtate: {<img src="https://codeclimate.com/github/steigr/navigator_rails/badges/gpa.svg" />}[https://codeclimate.com/github/steigr/navigator_rails]
-Coverage: {<img src="https://codeclimate.com/github/steigr/navigator_rails/badges/coverage.svg" />}[https://codeclimate.com/github/steigr/navigator_rails]
