@@ -8,3 +8,5 @@ test/dummy/tmp/
 test/dummy/.sass-cache
 navigator_rails*.gem
 test/dummy/**
+doc/**
+coverage/**

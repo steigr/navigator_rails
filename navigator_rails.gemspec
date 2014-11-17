@@ -20,4 +20,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'rails', '~> 4'
   s.add_runtime_dependency 'sourcify', '~> 0.5'
   s.add_runtime_dependency 'binding_of_caller', '~> 0.7'
+  s.add_development_dependency 'codeclimate-test-reporter'
+  s.add_development_dependency 'sqlite3'
 end

@@ -1,6 +1,50 @@
 = NavigatorRails
 
-This project rocks and uses MIT-LICENSE.
+This is a gem intended to make (bootstrap-)menu generation clean and easy.
+
+== Installation
+
+Add the following to your Gemfile
+
+  gem 'navigator_rails'
+
+And run
+
+  bundle install
+
+== Setup
+
+Run
+
+  rails g navigator_rails:install
+
+to get the initializer under
+
+  config/initializers/navigator.rb
+
+Customizer the brand to your needs.
+
+== Attaching Actions to the menu
+
+Put
+
+  include NavigatorRails::Navigatable
+
+in every controller, which may add menu_items
+
+Then add the menu_items like follows:
+
+  menu_item path: unix_like_path_of_item_position, constraint: ruby_code_as_string_should_return_true_for_displaying, content: ruby_code_which_will_be_embedded, active_on: action_name_of_as_symbol, order: unique_integer, type: decorator_type_as_symbol
+
+Example:
+
+  menu_item path: '/head/left/Posts/new', constraint: 'can? :create, Post', content: 'link_to "Posts", new_post_path', order: 1, active_on: :index
+
+= Structure
+
+The menu-builder will create the missing items in between the item and the root-item applying the decorators defined in
+
+  NavigatiorRails.config[:decorators]
 
 = Code Climate
 
