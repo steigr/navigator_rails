@@ -32,6 +32,24 @@ module NavigatorRails
     def constraint
       Constraint.process(@constraint.to_s) rescue Store.delete self
     end
+    def children params={}
+      children = Store.children_of self
+      children.collect do |child|
+        params.each do |attribute,value|
+          child=nil and break unless child and child.send(attribute) == value
+        end
+        child
+      end.compact
+    end
+    def children_except params={}
+      children = Store.children_of self
+      children.collect do |child|
+        params.each do |attribute,value|
+          child=nil and break if child and child.send(attribute) == value
+        end
+        child
+      end.compact
+    end
     def active
       return unless @active_on
       return unless Constraint.process('controller').class == @active_controller

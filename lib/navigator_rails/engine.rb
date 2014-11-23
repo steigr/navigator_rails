@@ -1,5 +1,6 @@
 require 'navigator_rails/config'
 require 'navigator_rails/navigatable'
+require 'navigator_rails/presentable'
 require 'navigator_rails/contextable'
 require 'navigator_rails/store'
 require 'navigator_rails/helpers'

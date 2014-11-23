@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    navigator_rails (0.0.6)
+    navigator_rails (0.0.7)
       binding_of_caller (~> 0.7)
       rails (~> 4)
       sourcify (~> 0.5)
