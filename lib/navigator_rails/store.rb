@@ -4,6 +4,7 @@ module NavigatorRails
   class Store
     include Singleton
     class << self
+      def items; Store.instance.items; end
       def add item; Store.instance.add item; end
       def get path; Store.instance.get path; end
       def delete item; Store.instance.delete item; end

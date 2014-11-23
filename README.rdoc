@@ -38,7 +38,7 @@ Then add the menu_items like follows:
 
 Example:
 
-  menu_item path: '/head/left/Posts/new', constraint: 'can? :create, Post', content: 'link_to "Posts", new_post_path', order: 1, active_on: :index
+  menu_item path: '/head/left/Posts/new', constraint: 'can? :create, Post', content: 'link_to "Posts", new_post_path', order: 1, active_on: :new
 
 = Structure
 

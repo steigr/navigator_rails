@@ -3,7 +3,7 @@ module NavigatorRails
     class Navigator
       include NavigatorRails::Decorators::Generic
       def brand
-        brand = Store.children_of(resource).select{|x|x.type==:brand}.first
+        brand = resource.children(type: :brand).first
         brand.decorator.draw(brand).html_safe
       end
       def template
@@ -20,7 +20,7 @@ module NavigatorRails
                 <%= brand %>
               </div>
             <div class="collapse navbar-collapse">
-              <%= children except: :brand %>
+              <%= draw_children(children_except(type: :brand)) %>
             </div>
           </div>
         </div>
