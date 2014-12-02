@@ -2,10 +2,11 @@ module NavigatorRails
   module Presentable
     extend ActiveSupport::Concern
     included do
-      cattr_accessor :resource_menu_label
+      cattr_accessor :navigation_label
     end
     module ClassMethods
-      def resource_menu_label key=nil
+      def resource_menu_label key
+        self.navigation_label = key
       end
     end
   end
